@@ -18,19 +18,9 @@ $(document).ready(() => {
 		$("#omni-extension-toast img").attr("src", chrome.runtime.getURL("assets/check.svg"));
 
 		// Request actions from the background
-		try {
-			chrome.runtime.sendMessage({request:"get-actions"}, (response) => {
-				if (chrome.runtime.lastError) {
-					console.log("Extension context invalidated, reloading page...");
-					window.location.reload();
-					return;
-				}
-				actions = response.actions;
-			});
-		} catch (error) {
-			console.log("Extension context invalidated, reloading page...");
-			window.location.reload();
-		}
+		chrome.runtime.sendMessage({request:"get-actions"}, (response) => {
+			actions = response.actions;
+		});
 
 		// New tab page workaround
 		if (window.location.href == "chrome-extension://mpanekjjajcabgnlbabmopeenljeoggm/newtab.html") {
@@ -124,40 +114,25 @@ $(document).ready(() => {
 
 	// Open the omni
 	function openOmni() {
-		try {
-			chrome.runtime.sendMessage({request:"get-actions"}, (response) => {
-				if (chrome.runtime.lastError) {
-					console.log("Extension context invalidated, reloading page...");
-					window.location.reload();
-					return;
-				}
-				isOpen = true;
-				actions = response.actions;
-				$("#omni-extension input").val("");
-				populateOmni();
-				$("html, body").stop();
-				$("#omni-extension").removeClass("omni-closing");
-				window.setTimeout(() => {
-					$("#omni-extension input").focus();
-					focusLock.on($("#omni-extension input").get(0));
-					$("#omni-extension input").focus();
-				}, 100);
-			});
-		} catch (error) {
-			console.log("Extension context invalidated, reloading page...");
-			window.location.reload();
-		}
+		chrome.runtime.sendMessage({request:"get-actions"}, (response) => {
+			isOpen = true;
+			actions = response.actions;
+			$("#omni-extension input").val("");
+			populateOmni();
+			$("html, body").stop();
+			$("#omni-extension").removeClass("omni-closing");
+			window.setTimeout(() => {
+				$("#omni-extension input").focus();
+				focusLock.on($("#omni-extension input").get(0));
+				$("#omni-extension input").focus();
+			}, 100);
+		});
 	}
 
 	// Close the omni
 	function closeOmni() {
 		if (window.location.href == "chrome-extension://mpanekjjajcabgnlbabmopeenljeoggm/newtab.html") {
-			try {
-				chrome.runtime.sendMessage({request:"restore-new-tab"});
-			} catch (error) {
-				console.log("Extension context invalidated, reloading page...");
-				window.location.reload();
-			}
+			chrome.runtime.sendMessage({request:"restore-new-tab"});
 		} else {
 			isOpen = false;
 			$("#omni-extension").addClass("omni-closing");
