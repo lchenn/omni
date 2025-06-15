@@ -293,13 +293,13 @@ $(document).ready(() => {
 			chrome.runtime.sendMessage({request:"remove", type:action.type, action:action});
 		} else if ($(".omni-extension input").val().toLowerCase().startsWith("/history")) {
 			if (e.ctrlKey || e.metaKey) {
-				window.open($(".omni-item-active").attr("data-url"));
+				window.open($(".omni-item-active").attr("data-url"), "_blank");
 			} else {
 				window.open($(".omni-item-active").attr("data-url"), "_self");
 			}
 		} else if ($(".omni-extension input").val().toLowerCase().startsWith("/bookmarks")) {
 			if (e.ctrlKey || e.metaKey) {
-				window.open($(".omni-item-active").attr("data-url"));
+				window.open($(".omni-item-active").attr("data-url"), "_blank");
 			} else {
 				window.open($(".omni-item-active").attr("data-url"), "_self");
 			}
@@ -308,7 +308,7 @@ $(document).ready(() => {
 			switch (action.action) {
 				case "bookmark":
 					if (e.ctrlKey || e.metaKey) {
-						window.open(action.url);
+						window.open(action.url, "_blank");
 					} else {
 						window.open(action.url, "_self");
 					}
@@ -322,7 +322,7 @@ $(document).ready(() => {
 					break;
 				case "navigation":
 					if (e.ctrlKey || e.metaKey) {
-						window.open(action.url);
+						window.open(action.url, "_blank");
 					} else {
 						window.open(action.url, "_self");
 					}
@@ -339,14 +339,14 @@ $(document).ready(() => {
 					break;
 				case "url":
 					if (e.ctrlKey || e.metaKey) {
-						window.open(action.url);
+						window.open(action.url, "_blank");
 					} else {
 						window.open(action.url, "_self");
 					}
 					break;
 				case "goto":
 					if (e.ctrlKey || e.metaKey) {
-						window.open(addhttp($(".omni-extension input").val()));
+						window.open(addhttp($(".omni-extension input").val()), "_blank");
 					} else {
 						window.open(addhttp($(".omni-extension input").val()), "_self");
 					}
